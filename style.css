@@ -435,3 +435,161 @@ button{cursor:pointer}
   .legend{grid-template-columns:1fr}
   .btn-wide{width:calc(100% - 44px);margin-left:22px;margin-right:22px}
 }
+
+
+/* NAINA DEDICATED EXPERIENCE */
+.naina-hero{
+  background:
+    radial-gradient(circle at 88% 20%, rgba(236,72,153,.12), transparent 24%),
+    linear-gradient(135deg,#ffffff 0%,#f7faff 65%,#fff5fa 100%);
+}
+.hero-lead{max-width:760px}
+.motivation-card{
+  margin-top:22px;
+  max-width:780px;
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  background:linear-gradient(135deg,#fff1f7,#f7f4ff);
+  border:1px solid #f3c7dc;
+  border-radius:14px;
+  padding:16px 18px;
+}
+.motivation-card .heart{
+  width:38px;height:38px;min-width:38px;border-radius:11px;
+  background:#db2777;color:#fff;
+  display:grid;place-items:center;
+  box-shadow:0 8px 18px rgba(219,39,119,.20);
+}
+.motivation-card strong{display:block;color:#831843;margin-bottom:4px}
+.motivation-card span{display:block;color:#5b3b4c;font-size:13px;line-height:1.55}
+.support-note{margin-top:12px!important;font-size:12px!important;color:#9d174d!important;font-weight:700}
+
+.practice-benchmark{
+  display:flex;align-items:center;gap:14px;
+  padding:16px 38px;
+  background:#fffbeb;
+  border-bottom:1px solid #fde68a;
+}
+.benchmark-icon{
+  width:38px;height:38px;min-width:38px;border-radius:10px;
+  background:#f59e0b;color:#fff;display:grid;place-items:center;font-weight:900
+}
+.practice-benchmark strong{display:block;font-size:14px;color:#92400e}
+.practice-benchmark span{display:block;font-size:12px;color:#a16207;margin-top:3px;line-height:1.45}
+
+.start-actions{
+  display:flex;gap:12px;
+  padding:0 38px 34px;
+}
+.start-actions .btn{flex:1;padding:13px 18px}
+
+.encouragement-strip{
+  text-align:center;
+  padding:8px 14px;
+  background:#fff7ed;
+  border-bottom:1px solid #fed7aa;
+  color:#9a3412;
+  font-size:12px;
+}
+
+.passfail-banner{
+  margin-top:18px;
+  border-radius:16px;
+  padding:20px 22px;
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:center;
+  box-shadow:0 8px 24px rgba(15,23,42,.05);
+}
+.passfail-banner.pass{
+  background:linear-gradient(135deg,#ecfdf5,#f0fdf4);
+  border:1px solid #bbf7d0;
+}
+.passfail-banner.fail{
+  background:linear-gradient(135deg,#fff7ed,#fffbeb);
+  border:1px solid #fed7aa;
+}
+.passfail-banner h2{margin:0 0 4px;font-size:22px}
+.passfail-banner p{margin:0;font-size:13px;color:var(--gray-700)}
+.passfail-badge{
+  font-size:18px;font-weight:900;
+  padding:10px 16px;border-radius:999px;
+}
+.pass .passfail-badge{background:#15803d;color:#fff}
+.fail .passfail-badge{background:#d97706;color:#fff}
+
+.share-panel{
+  margin-top:18px;
+  background:#fff;
+  border:1px solid var(--gray-200);
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 8px 24px rgba(15,23,42,.05);
+}
+.share-panel h3{margin:0 0 4px}
+.share-panel p{margin:0;color:var(--gray-500);font-size:13px}
+.share-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.copy-status{font-size:12px;color:var(--green);font-weight:700;margin-top:10px;min-height:16px}
+
+.modal-overlay{
+  position:fixed;inset:0;
+  z-index:1000;
+  background:rgba(15,23,42,.58);
+  display:grid;place-items:center;
+  padding:18px;
+}
+.modal-overlay.hidden{display:none}
+.modal-card{
+  width:min(960px,100%);
+  max-height:88vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 30px 80px rgba(15,23,42,.30);
+  padding:24px;
+}
+.modal-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+.modal-head h2{margin:10px 0 3px}
+.modal-head p{margin:0;color:var(--gray-500);font-size:12px}
+.icon-btn{
+  width:38px;height:38px;border-radius:10px;border:1px solid var(--gray-200);
+  background:var(--gray-50);font-size:25px;line-height:1;color:var(--gray-700)
+}
+.history-empty{
+  padding:30px;text-align:center;color:var(--gray-500);
+  border:1px dashed var(--gray-300);border-radius:12px;margin-top:18px
+}
+.history-table{width:100%;border-collapse:collapse;margin-top:18px}
+.history-table th,.history-table td{
+  padding:11px 9px;border-bottom:1px solid var(--gray-200);text-align:center;font-size:12px
+}
+.history-table th{background:#f8fafc;color:var(--gray-700)}
+.history-pass{color:var(--green);font-weight:800}
+.history-fail{color:#b45309;font-weight:800}
+.modal-actions{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.btn-danger-outline{background:#fff;color:var(--red);border:1px solid #fecaca}
+
+.auto-note{
+  margin-top:18px;padding:12px 14px;border-radius:10px;
+  background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:13px;font-weight:700
+}
+
+@media(max-width:640px){
+  .start-actions{padding-left:22px;padding-right:22px;flex-direction:column}
+  .practice-benchmark{padding-left:22px;padding-right:22px}
+  .passfail-banner{align-items:flex-start;flex-direction:column}
+  .share-actions{display:grid;grid-template-columns:1fr}
+  .modal-actions{flex-direction:column}
+  .history-table{min-width:680px}
+  #historyContent{overflow:auto}
+}
+
+@media print{
+  body{background:#fff}
+  .result-actions,.share-panel,.footer-note,.badge{display:none!important}
+  .result-shell{max-width:none;margin:0;padding:0}
+  .result-hero{box-shadow:none}
+  .answer-review{display:block!important}
+}

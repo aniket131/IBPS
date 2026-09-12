@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IBPS 2026 Professional Mock Test</title>
+  <title>IBPS 2026 Mock Test for Naina Dalvi</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -16,15 +16,25 @@
           <div class="brand-mark">IB</div>
           <div>
             <div class="brand-title">IBPS Mock Portal</div>
-            <div class="brand-subtitle">Practice Examination Environment</div>
+            <div class="brand-subtitle">Dedicated Practice Examination</div>
           </div>
         </div>
 
         <div class="start-card">
-          <div class="hero">
-            <span class="badge">2026 PRACTICE TEST</span>
-            <h1>IBPS Mixed Mock Examination</h1>
-            <p>Professional practice interface for banking exam preparation.</p>
+          <div class="hero naina-hero">
+            <div class="hero-copy">
+              <span class="badge">MADE ESPECIALLY FOR NAINA</span>
+              <h1>IBPS Mock Test for Naina Dalvi</h1>
+              <p class="hero-lead">A dedicated banking exam practice test to help you build speed, accuracy, and confidence.</p>
+              <div class="motivation-card">
+                <div class="heart">♥</div>
+                <div>
+                  <strong>Naina, you’ve got this.</strong>
+                  <span>Stay calm, trust your preparation, and take it one question at a time. Every mock is one step closer to your goal.</span>
+                </div>
+              </div>
+              <p class="support-note">Prepared with love and support from your husband.</p>
+            </div>
           </div>
 
           <div class="exam-meta">
@@ -32,6 +42,14 @@
             <div><span>Duration</span><strong>40 Minutes</strong></div>
             <div><span>Correct</span><strong>+1 Mark</strong></div>
             <div><span>Wrong</span><strong>-0.25 Mark</strong></div>
+          </div>
+
+          <div class="practice-benchmark">
+            <div class="benchmark-icon">◎</div>
+            <div>
+              <strong>Practice benchmark: 60%</strong>
+              <span>A score of 30/50 or more is shown as PASS for this practice test. This is not an official IBPS cutoff.</span>
+            </div>
           </div>
 
           <div class="instructions-card">
@@ -48,24 +66,26 @@
               <li>Use <b>Save & Next</b> to record your response before moving ahead.</li>
               <li>Use <b>Mark for Review & Next</b> for questions you want to revisit.</li>
               <li>The test will be automatically submitted when the timer reaches zero.</li>
+              <li>Your result and answer summary will be saved in this browser after submission.</li>
             </ul>
           </div>
 
           <div class="candidate-box">
             <label for="candidateName">Candidate Name</label>
-            <input id="candidateName" type="text" placeholder="Enter your full name" />
+            <input id="candidateName" type="text" value="Naina Dalvi" readonly />
             <label class="consent-row">
               <input type="checkbox" id="consentCheck" />
               <span>I have read the instructions and am ready to begin the test.</span>
             </label>
           </div>
 
-          <button id="startBtn" class="btn btn-primary btn-wide" disabled>
-            Start Examination
-          </button>
+          <div class="start-actions">
+            <button id="historyBtn" class="btn btn-light">View Previous Attempts</button>
+            <button id="startBtn" class="btn btn-primary" disabled>Start Examination</button>
+          </div>
         </div>
 
-        <div class="footer-note">Practice portal • Designed for self-assessment</div>
+        <div class="footer-note">Dedicated IBPS practice portal for Naina Dalvi • Keep going, one mock at a time ♥</div>
       </div>
     </section>
 
@@ -75,7 +95,7 @@
         <div class="header-left">
           <div class="mini-mark">IB</div>
           <div>
-            <h2>IBPS 2026 Mock Examination</h2>
+            <h2>IBPS 2026 Mock Test • Naina Dalvi</h2>
             <div class="header-meta">
               <span id="candidateLabel"></span>
               <span>•</span>
@@ -88,6 +108,10 @@
           <div class="timerbox" id="timer">40:00</div>
         </div>
       </header>
+
+      <div class="encouragement-strip">
+        <strong>Stay focused, Naina.</strong> Accuracy first, speed will follow.
+      </div>
 
       <div class="exam-toolbar">
         <div id="sectionTabs" class="tabs"></div>
@@ -124,10 +148,10 @@
 
         <aside class="side-panel">
           <div class="profile-box">
-            <div class="avatar">C</div>
+            <div class="avatar">N</div>
             <div>
-              <strong id="sideCandidateName">Candidate</strong>
-              <span>Mock Test Session</span>
+              <strong id="sideCandidateName">Naina Dalvi</strong>
+              <span>IBPS Practice Candidate</span>
             </div>
           </div>
 
@@ -160,12 +184,13 @@
         <div class="result-hero">
           <div class="result-icon">✓</div>
           <div>
-            <span class="badge">TEST COMPLETED</span>
+            <span class="badge">NAINA'S TEST COMPLETED</span>
             <h1>Performance Summary</h1>
-            <p>Your final mock-test analysis is shown below.</p>
+            <p>Review the score, practice result, accuracy, and section-wise performance.</p>
           </div>
         </div>
 
+        <div id="passFailBanner"></div>
         <div id="resultSummary"></div>
 
         <div class="result-section-card">
@@ -179,14 +204,47 @@
           <div id="sectionResults"></div>
         </div>
 
+        <div class="share-panel">
+          <div>
+            <h3>Share or Save Naina's Result</h3>
+            <p>Copy a short summary, download a full answer report, or print/save the result as PDF.</p>
+          </div>
+          <div class="share-actions">
+            <button id="copySummaryBtn" class="btn btn-light">Copy Share Summary</button>
+            <button id="downloadReportBtn" class="btn btn-light">Download Full Report</button>
+            <button id="printBtn" class="btn btn-light">Print / Save PDF</button>
+          </div>
+          <div id="copyStatus" class="copy-status"></div>
+        </div>
+
         <div class="result-actions">
-          <button id="reviewAnswersBtn" class="btn btn-review">Review Answers</button>
-          <button id="restartBtn" class="btn btn-primary">Restart Test</button>
+          <button id="reviewAnswersBtn" class="btn btn-review">Review All Answers</button>
+          <button id="restartBtn" class="btn btn-primary">Take Another Attempt</button>
         </div>
 
         <div id="answerReview" class="answer-review"></div>
       </div>
     </section>
+
+    <!-- ATTEMPT HISTORY MODAL -->
+    <div id="historyModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div>
+            <span class="badge">LOCAL RECORDS</span>
+            <h2>Naina's Previous Attempts</h2>
+            <p>Saved only in this browser/device.</p>
+          </div>
+          <button id="closeHistoryBtn" class="icon-btn" aria-label="Close">×</button>
+        </div>
+        <div id="historyContent"></div>
+        <div class="modal-actions">
+          <button id="clearHistoryBtn" class="btn btn-danger-outline">Clear Attempt History</button>
+          <button id="closeHistoryBtn2" class="btn btn-primary">Close</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script src="questions.js"></script>

@@ -2,13 +2,16 @@
 const TOTAL_TIME_SECONDS = 40 * 60;
 const CORRECT_MARK = 1;
 const WRONG_MARK = -0.25;
+const PRACTICE_PASS_SCORE = 30; // 60% of 50. Practice benchmark only.
+const HISTORY_KEY = "nainaIbpsMockAttemptsV1";
 
 let currentIndex = 0;
 let responses = Array(QUESTIONS.length).fill(null);
 let status = Array(QUESTIONS.length).fill("unanswered");
 let secondsLeft = TOTAL_TIME_SECONDS;
 let timerId = null;
-let candidateName = "";
+let candidateName = "Naina Dalvi";
+let latestAttempt = null;
 
 const $ = id => document.getElementById(id);
 
@@ -33,6 +36,7 @@ const markReviewBtn = $("markReviewBtn");
 const clearBtn = $("clearBtn");
 const prevBtn = $("prevBtn");
 const submitBtn = $("submitBtn");
+const passFailBanner = $("passFailBanner");
 const resultSummary = $("resultSummary");
 const sectionResults = $("sectionResults");
 const restartBtn = $("restartBtn");
@@ -41,6 +45,16 @@ const answerReview = $("answerReview");
 const progressLabel = $("progressLabel");
 const progressFill = $("progressFill");
 const sectionCountLabel = $("sectionCountLabel");
+const copySummaryBtn = $("copySummaryBtn");
+const downloadReportBtn = $("downloadReportBtn");
+const printBtn = $("printBtn");
+const copyStatus = $("copyStatus");
+const historyBtn = $("historyBtn");
+const historyModal = $("historyModal");
+const closeHistoryBtn = $("closeHistoryBtn");
+const closeHistoryBtn2 = $("closeHistoryBtn2");
+const historyContent = $("historyContent");
+const clearHistoryBtn = $("clearHistoryBtn");
 
 const sections = [...new Set(QUESTIONS.map(q => q.section))];
 
@@ -55,6 +69,13 @@ function fmtTime(sec){
   const m = Math.floor(sec/60).toString().padStart(2,"0");
   const s = (sec%60).toString().padStart(2,"0");
   return `${m}:${s}`;
+}
+
+function formatDate(iso){
+  return new Date(iso).toLocaleString("en-IN", {
+    year:"numeric", month:"short", day:"2-digit",
+    hour:"2-digit", minute:"2-digit"
+  });
 }
 
 function updateStartState(){
@@ -212,7 +233,7 @@ function startTimer(){
 }
 
 startBtn.onclick = () => {
-  candidateName = candidateInput.value.trim() || "Candidate";
+  candidateName = "Naina Dalvi";
   candidateLabel.textContent = `Candidate: ${candidateName}`;
   sideCandidateName.textContent = candidateName;
   showScreen(testScreen);
@@ -258,12 +279,70 @@ function scoreTest(){
   };
 }
 
+function getHistory(){
+  try{
+    return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+  }catch(e){
+    return [];
+  }
+}
+
+function saveAttempt(attempt){
+  const history = getHistory();
+  history.unshift(attempt);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, 25)));
+}
+
+function buildAttempt(auto, r, attempted, accuracy, used){
+  return {
+    id: `NAINA-${Date.now()}`,
+    candidate: candidateName,
+    date: new Date().toISOString(),
+    autoSubmitted: auto,
+    total: QUESTIONS.length,
+    attempted,
+    correct: r.correct,
+    wrong: r.wrong,
+    unanswered: r.unanswered,
+    score: Number(r.score.toFixed(2)),
+    accuracy: Number(accuracy.toFixed(2)),
+    timeUsedSeconds: used,
+    status: r.score >= PRACTICE_PASS_SCORE ? "PASS" : "FAIL",
+    benchmark: PRACTICE_PASS_SCORE,
+    sectionStats: r.sectionStats,
+    responses: [...responses]
+  };
+}
+
 function submitTest(auto){
   if(timerId) clearInterval(timerId);
+
+  // Save currently selected answer as answered if one is selected.
+  if(responses[currentIndex] !== null && status[currentIndex] === "unanswered"){
+    status[currentIndex] = "answered";
+  }
+
   const r = scoreTest();
   const attempted = r.correct + r.wrong;
   const accuracy = attempted ? (r.correct / attempted * 100) : 0;
   const used = TOTAL_TIME_SECONDS - secondsLeft;
+
+  latestAttempt = buildAttempt(auto, r, attempted, accuracy, used);
+  saveAttempt(latestAttempt);
+
+  const passed = latestAttempt.status === "PASS";
+  passFailBanner.innerHTML = `
+    <div class="passfail-banner ${passed ? "pass" : "fail"}">
+      <div>
+        <h2>${passed ? "Great work, Naina!" : "Keep going, Naina!"}</h2>
+        <p>${passed
+          ? `You crossed the practice benchmark of ${PRACTICE_PASS_SCORE}/50. Keep improving your speed and accuracy.`
+          : `This attempt is below the practice benchmark of ${PRACTICE_PASS_SCORE}/50. Review the weak areas and try again — improvement comes one mock at a time.`
+        }</p>
+      </div>
+      <div class="passfail-badge">${latestAttempt.status}</div>
+    </div>
+  `;
 
   resultSummary.innerHTML = `
     ${auto ? '<div class="auto-note">Time completed. The test was automatically submitted.</div>' : ''}
@@ -312,7 +391,26 @@ function submitTest(auto){
 
   answerReview.innerHTML = "";
   answerReview.style.display = "none";
+  copyStatus.textContent = "";
   showScreen(resultScreen);
+}
+
+function buildAnswerReviewHtml(attempt = latestAttempt){
+  if(!attempt) return "";
+  return QUESTIONS.map((q, i) => {
+    const selected = attempt.responses[i];
+    const user = selected === null
+      ? "Not answered"
+      : `${String.fromCharCode(65+selected)}. ${q.options[selected]}`;
+    const correct = `${String.fromCharCode(65+q.answer)}. ${q.options[q.answer]}`;
+    const ok = selected === q.answer;
+    return `
+      <div class="review-item">
+        <div style="font-weight:800;margin-bottom:6px">Q${q.id}. ${q.question}</div>
+        <div>Your answer: <span class="${ok ? 'correct' : 'wrong'}">${user}</span></div>
+        <div>Correct answer: <span class="correct">${correct}</span></div>
+      </div>`;
+  }).join("");
 }
 
 reviewAnswersBtn.onclick = () => {
@@ -320,28 +418,195 @@ reviewAnswersBtn.onclick = () => {
     answerReview.style.display = "none";
     return;
   }
-
   answerReview.style.display = "block";
-  answerReview.innerHTML = "<h2>Answer Review</h2>";
+  answerReview.innerHTML = "<h2>Complete Answer Review</h2>" + buildAnswerReviewHtml();
+};
 
-  QUESTIONS.forEach((q, i) => {
-    const div = document.createElement("div");
-    div.className = "review-item";
+function shareSummaryText(attempt){
+  if(!attempt) return "";
+  const sectionLines = Object.entries(attempt.sectionStats)
+    .map(([name,s]) => `${name}: ${s.score.toFixed(2)}/${s.total} (${s.correct} correct, ${s.wrong} wrong)`)
+    .join("\n");
 
-    const user = responses[i] === null
-      ? "Not answered"
-      : `${String.fromCharCode(65+responses[i])}. ${q.options[responses[i]]}`;
+  return `IBPS Mock Test for Naina Dalvi
+Date: ${formatDate(attempt.date)}
+Practice Result: ${attempt.status}
+Score: ${attempt.score.toFixed(2)}/50
+Accuracy: ${attempt.accuracy.toFixed(2)}%
+Attempted: ${attempt.attempted}/50
+Correct: ${attempt.correct}
+Wrong: ${attempt.wrong}
+Unanswered: ${attempt.unanswered}
+Time Used: ${fmtTime(attempt.timeUsedSeconds)}
 
+Section-wise:
+${sectionLines}
+
+Practice benchmark: ${PRACTICE_PASS_SCORE}/50 (not an official IBPS cutoff)
+
+Keep going, Naina — one mock at a time.`;
+}
+
+copySummaryBtn.onclick = async () => {
+  const text = shareSummaryText(latestAttempt);
+  try{
+    await navigator.clipboard.writeText(text);
+    copyStatus.textContent = "Result summary copied. You can paste it into WhatsApp, email, or any message.";
+  }catch(e){
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+    copyStatus.textContent = "Result summary copied.";
+  }
+};
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;");
+}
+
+function downloadFullReport(attempt){
+  if(!attempt) return;
+
+  const answerRows = QUESTIONS.map((q,i) => {
+    const selected = attempt.responses[i];
+    const user = selected === null ? "Not answered" : `${String.fromCharCode(65+selected)}. ${q.options[selected]}`;
     const correct = `${String.fromCharCode(65+q.answer)}. ${q.options[q.answer]}`;
-    const ok = responses[i] === q.answer;
+    const state = selected === q.answer ? "Correct" : selected === null ? "Unanswered" : "Wrong";
+    return `<tr>
+      <td>${q.id}</td>
+      <td>${escapeHtml(q.section)}</td>
+      <td>${escapeHtml(q.question)}</td>
+      <td>${escapeHtml(user)}</td>
+      <td>${escapeHtml(correct)}</td>
+      <td>${state}</td>
+    </tr>`;
+  }).join("");
 
-    div.innerHTML = `
-      <div style="font-weight:800;margin-bottom:6px">Q${q.id}. ${q.question}</div>
-      <div>Your answer: <span class="${ok ? 'correct' : 'wrong'}">${user}</span></div>
-      <div>Correct answer: <span class="correct">${correct}</span></div>
-    `;
-    answerReview.appendChild(div);
-  });
+  const sectionRows = Object.entries(attempt.sectionStats).map(([name,s]) => `
+    <tr>
+      <td>${escapeHtml(name)}</td>
+      <td>${s.total}</td>
+      <td>${s.correct}</td>
+      <td>${s.wrong}</td>
+      <td>${s.unanswered}</td>
+      <td>${s.score.toFixed(2)}</td>
+    </tr>`).join("");
+
+  const html = `<!doctype html>
+<html><head><meta charset="utf-8"><title>Naina Dalvi - IBPS Mock Result</title>
+<style>
+body{font-family:Arial,sans-serif;margin:32px;color:#172033}
+h1{color:#0b1f3a}.banner{padding:16px;border-radius:10px;background:${attempt.status==="PASS"?"#ecfdf5":"#fff7ed"};margin:16px 0}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.metric{border:1px solid #dbe3ee;border-radius:8px;padding:12px}
+.metric b{display:block;font-size:22px}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+th,td{border:1px solid #dbe3ee;padding:8px;text-align:left;vertical-align:top}
+th{background:#f4f7fb}
+.small{font-size:12px;color:#64748b}
+</style></head><body>
+<h1>IBPS Mock Test for Naina Dalvi</h1>
+<div class="small">Attempt: ${escapeHtml(attempt.id)} • ${escapeHtml(formatDate(attempt.date))}</div>
+<div class="banner"><b>Practice Result: ${attempt.status}</b><br>Practice benchmark: ${PRACTICE_PASS_SCORE}/50. This is not an official IBPS cutoff.</div>
+<div class="grid">
+<div class="metric"><b>${attempt.score.toFixed(2)}</b>Score / 50</div>
+<div class="metric"><b>${attempt.accuracy.toFixed(2)}%</b>Accuracy</div>
+<div class="metric"><b>${attempt.correct}</b>Correct</div>
+<div class="metric"><b>${attempt.wrong}</b>Wrong</div>
+<div class="metric"><b>${attempt.unanswered}</b>Unanswered</div>
+<div class="metric"><b>${attempt.attempted}</b>Attempted</div>
+<div class="metric"><b>${fmtTime(attempt.timeUsedSeconds)}</b>Time Used</div>
+<div class="metric"><b>${attempt.status}</b>Practice Status</div>
+</div>
+
+<h2>Section-wise Performance</h2>
+<table><thead><tr><th>Section</th><th>Total</th><th>Correct</th><th>Wrong</th><th>Unanswered</th><th>Score</th></tr></thead>
+<tbody>${sectionRows}</tbody></table>
+
+<h2>Answer-by-Answer Review</h2>
+<table><thead><tr><th>Q</th><th>Section</th><th>Question</th><th>Naina's Answer</th><th>Correct Answer</th><th>Status</th></tr></thead>
+<tbody>${answerRows}</tbody></table>
+
+<p><b>Keep going, Naina — one mock at a time.</b></p>
+<p class="small">Prepared as a personal practice report. Not an official IBPS scorecard.</p>
+</body></html>`;
+
+  const blob = new Blob([html], {type:"text/html;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const date = new Date(attempt.date).toISOString().slice(0,10);
+  a.href = url;
+  a.download = `Naina_Dalvi_IBPS_Mock_Result_${date}.html`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+downloadReportBtn.onclick = () => downloadFullReport(latestAttempt);
+printBtn.onclick = () => {
+  if(answerReview.style.display !== "block"){
+    answerReview.style.display = "block";
+    answerReview.innerHTML = "<h2>Complete Answer Review</h2>" + buildAnswerReviewHtml();
+  }
+  window.print();
+};
+
+function renderHistory(){
+  const history = getHistory();
+  if(!history.length){
+    historyContent.innerHTML = `<div class="history-empty">No attempts saved yet. Naina's submitted tests will appear here.</div>`;
+    return;
+  }
+
+  const rows = history.map((a, idx) => `
+    <tr>
+      <td>${idx+1}</td>
+      <td>${formatDate(a.date)}</td>
+      <td><b>${Number(a.score).toFixed(2)}/50</b></td>
+      <td>${Number(a.accuracy).toFixed(2)}%</td>
+      <td>${a.correct}</td>
+      <td>${a.wrong}</td>
+      <td>${a.unanswered}</td>
+      <td><span class="${a.status==="PASS"?"history-pass":"history-fail"}">${a.status}</span></td>
+    </tr>`).join("");
+
+  historyContent.innerHTML = `
+    <div style="overflow:auto">
+      <table class="history-table">
+        <thead>
+          <tr><th>#</th><th>Date</th><th>Score</th><th>Accuracy</th><th>Correct</th><th>Wrong</th><th>Unanswered</th><th>Status</th></tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:#64748b;margin-top:12px">
+      These records are stored in this browser using local storage. They are not automatically sent to another phone or computer.
+    </p>`;
+}
+
+historyBtn.onclick = () => {
+  renderHistory();
+  historyModal.classList.remove("hidden");
+};
+closeHistoryBtn.onclick = () => historyModal.classList.add("hidden");
+closeHistoryBtn2.onclick = () => historyModal.classList.add("hidden");
+historyModal.addEventListener("click", e => {
+  if(e.target === historyModal) historyModal.classList.add("hidden");
+});
+
+clearHistoryBtn.onclick = () => {
+  if(confirm("Clear all saved attempt history from this browser?")){
+    localStorage.removeItem(HISTORY_KEY);
+    renderHistory();
+  }
 };
 
 restartBtn.onclick = () => location.reload();
