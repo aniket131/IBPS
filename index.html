@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IBPS 2026 Professional Mock Test</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- START SCREEN -->
+    <section id="startScreen" class="screen active">
+      <div class="start-shell">
+        <div class="brand-panel">
+          <div class="brand-mark">IB</div>
+          <div>
+            <div class="brand-title">IBPS Mock Portal</div>
+            <div class="brand-subtitle">Practice Examination Environment</div>
+          </div>
+        </div>
+
+        <div class="start-card">
+          <div class="hero">
+            <span class="badge">2026 PRACTICE TEST</span>
+            <h1>IBPS Mixed Mock Examination</h1>
+            <p>Professional practice interface for banking exam preparation.</p>
+          </div>
+
+          <div class="exam-meta">
+            <div><span>Questions</span><strong>50</strong></div>
+            <div><span>Duration</span><strong>40 Minutes</strong></div>
+            <div><span>Correct</span><strong>+1 Mark</strong></div>
+            <div><span>Wrong</span><strong>-0.25 Mark</strong></div>
+          </div>
+
+          <div class="instructions-card">
+            <div class="section-heading">
+              <span class="step-no">01</span>
+              <div>
+                <h3>Candidate Instructions</h3>
+                <p>Please read the instructions before beginning.</p>
+              </div>
+            </div>
+            <ul>
+              <li>The test contains Quantitative Aptitude, Reasoning, English, and General/Banking Awareness.</li>
+              <li>You may switch between sections and questions at any time.</li>
+              <li>Use <b>Save & Next</b> to record your response before moving ahead.</li>
+              <li>Use <b>Mark for Review & Next</b> for questions you want to revisit.</li>
+              <li>The test will be automatically submitted when the timer reaches zero.</li>
+            </ul>
+          </div>
+
+          <div class="candidate-box">
+            <label for="candidateName">Candidate Name</label>
+            <input id="candidateName" type="text" placeholder="Enter your full name" />
+            <label class="consent-row">
+              <input type="checkbox" id="consentCheck" />
+              <span>I have read the instructions and am ready to begin the test.</span>
+            </label>
+          </div>
+
+          <button id="startBtn" class="btn btn-primary btn-wide" disabled>
+            Start Examination
+          </button>
+        </div>
+
+        <div class="footer-note">Practice portal • Designed for self-assessment</div>
+      </div>
+    </section>
+
+    <!-- TEST SCREEN -->
+    <section id="testScreen" class="screen">
+      <header class="exam-header">
+        <div class="header-left">
+          <div class="mini-mark">IB</div>
+          <div>
+            <h2>IBPS 2026 Mock Examination</h2>
+            <div class="header-meta">
+              <span id="candidateLabel"></span>
+              <span>•</span>
+              <span>50 Questions</span>
+            </div>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="time-label">Time Remaining</div>
+          <div class="timerbox" id="timer">40:00</div>
+        </div>
+      </header>
+
+      <div class="exam-toolbar">
+        <div id="sectionTabs" class="tabs"></div>
+        <div class="progress-wrap">
+          <span id="progressLabel">0 / 50 answered</span>
+          <div class="progress-bar"><div id="progressFill"></div></div>
+        </div>
+      </div>
+
+      <main class="exam-layout">
+        <section class="question-card">
+          <div class="question-top">
+            <div>
+              <div id="questionNumber" class="q-number"></div>
+              <div id="questionSection" class="q-section"></div>
+            </div>
+            <div id="questionStatusPill" class="status-pill neutral">Not Answered</div>
+          </div>
+
+          <div id="questionText" class="question-text"></div>
+          <div id="options" class="options"></div>
+
+          <div class="question-footer">
+            <div class="left-actions">
+              <button id="markReviewBtn" class="btn btn-review">Mark for Review & Next</button>
+              <button id="clearBtn" class="btn btn-light">Clear Response</button>
+            </div>
+            <div class="right-actions">
+              <button id="prevBtn" class="btn btn-light">Previous</button>
+              <button id="saveNextBtn" class="btn btn-primary">Save & Next</button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="side-panel">
+          <div class="profile-box">
+            <div class="avatar">C</div>
+            <div>
+              <strong id="sideCandidateName">Candidate</strong>
+              <span>Mock Test Session</span>
+            </div>
+          </div>
+
+          <div class="panel-block">
+            <h3>Question Status</h3>
+            <div class="legend">
+              <span><i class="dot answered"></i>Answered</span>
+              <span><i class="dot review"></i>Marked for Review</span>
+              <span><i class="dot current"></i>Current Question</span>
+              <span><i class="dot unanswered"></i>Not Answered</span>
+            </div>
+          </div>
+
+          <div class="panel-block">
+            <div class="palette-title">
+              <h3>Question Palette</h3>
+              <span id="sectionCountLabel"></span>
+            </div>
+            <div id="palette" class="palette"></div>
+          </div>
+
+          <button id="submitBtn" class="btn btn-danger btn-wide">Submit Test</button>
+        </aside>
+      </main>
+    </section>
+
+    <!-- RESULT SCREEN -->
+    <section id="resultScreen" class="screen">
+      <div class="result-shell">
+        <div class="result-hero">
+          <div class="result-icon">✓</div>
+          <div>
+            <span class="badge">TEST COMPLETED</span>
+            <h1>Performance Summary</h1>
+            <p>Your final mock-test analysis is shown below.</p>
+          </div>
+        </div>
+
+        <div id="resultSummary"></div>
+
+        <div class="result-section-card">
+          <div class="section-heading compact">
+            <span class="step-no">02</span>
+            <div>
+              <h3>Section-wise Performance</h3>
+              <p>Detailed breakdown by subject.</p>
+            </div>
+          </div>
+          <div id="sectionResults"></div>
+        </div>
+
+        <div class="result-actions">
+          <button id="reviewAnswersBtn" class="btn btn-review">Review Answers</button>
+          <button id="restartBtn" class="btn btn-primary">Restart Test</button>
+        </div>
+
+        <div id="answerReview" class="answer-review"></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
