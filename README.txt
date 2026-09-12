@@ -1,44 +1,43 @@
-IBPS 2026 MOCK TEST FOR NAINA DALVI
+IBPS 2026 MOCK TEST FOR NAINA DALVI - PHOTO + AUDIO VERSION
 
-WHAT'S NEW
-- Dedicated start page for Naina Dalvi
-- Motivational message
-- Candidate name fixed as Naina Dalvi
-- Practice PASS/FAIL benchmark at 60% (30/50)
-- Clear note that this is NOT an official IBPS cutoff
-- Previous attempt history saved in the browser
-- Copy Share Summary button
-- Download Full Report button with answer-by-answer analysis
-- Print / Save as PDF button
-- Full section-wise results
+WHAT'S INCLUDED
+- Personalized start page for Naina Dalvi
+- Naina's photos already integrated in the UI
+- Welcome voice message
+- Start chime
+- Submit chime
+- Result chime
+- Result voice message
+- Local attempt history
+- Copy Share Summary
+- Download Full Report
+- Print / Save as PDF
 - Full answer review
+- PASS / FAIL practice benchmark (30/50)
 
-IMPORTANT ABOUT RECORDS
-The attempt history uses browser localStorage.
-That means:
-- If Naina takes the test on your laptop in Chrome, the history stays in that Chrome browser.
-- If she takes it on her phone, the history stays on her phone browser.
-- GitHub Pages by itself does NOT provide a central database of exam attempts.
-- Use "Copy Share Summary" or "Download Full Report" to send the result to another person.
+FOLDER STRUCTURE
+Upload ALL files and folders to the ROOT of your GitHub repository:
 
-FILES
-- index.html
-- style.css
-- app.js
-- questions.js
-- README.txt
+index.html
+style.css
+app.js
+questions.js
+README.txt
+assets/
+  naina_blue.jpg
+  naina_cream.jpg
+  welcome_voice.mp3
+  start_chime.mp3
+  submit_chime.mp3
+  result_chime.mp3
+  result_voice.mp3
 
-UPLOAD TO YOUR EXISTING GITHUB REPOSITORY
-1. Open the repository.
-2. Upload/replace index.html, style.css, app.js, questions.js and README.txt in the ROOT.
-3. Commit changes.
-4. If GitHub Pages is already enabled, the live site updates automatically after deployment.
+IMPORTANT
+- Keep the assets folder name exactly as "assets"
+- Do not upload only the ZIP
+- Extract the ZIP first, then upload the actual files and assets folder
+- GitHub Pages will work only when index.html is in the repository root
 
-PRACTICE SCORING
-Correct: +1
-Wrong: -0.25
-Unanswered: 0
-Practice PASS: 30/50 or above
-Practice FAIL: below 30/50
-
-The PASS/FAIL benchmark is for personal practice only and is not an official IBPS cutoff.
+ABOUT RESULTS
+Attempt history is stored in the browser on the same device.
+If you want results to come to you automatically, later we can add Google Sheets integration.

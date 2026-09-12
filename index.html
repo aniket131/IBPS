@@ -22,18 +22,26 @@
 
         <div class="start-card">
           <div class="hero naina-hero">
-            <div class="hero-copy">
-              <span class="badge">MADE ESPECIALLY FOR NAINA</span>
-              <h1>IBPS Mock Test for Naina Dalvi</h1>
-              <p class="hero-lead">A dedicated banking exam practice test to help you build speed, accuracy, and confidence.</p>
-              <div class="motivation-card">
-                <div class="heart">♥</div>
-                <div>
-                  <strong>Naina, you’ve got this.</strong>
-                  <span>Stay calm, trust your preparation, and take it one question at a time. Every mock is one step closer to your goal.</span>
+            <div class="hero-grid">
+              <div class="hero-copy">
+                <span class="badge">MADE ESPECIALLY FOR NAINA</span>
+                <h1>IBPS Mock Test for Naina Dalvi</h1>
+                <p class="hero-lead">A dedicated banking exam practice test to help you build speed, accuracy, and confidence.</p>
+                <div class="motivation-card">
+                  <div class="heart">♥</div>
+                  <div>
+                    <strong>Naina, you’ve got this.</strong>
+                    <span>Stay calm, trust your preparation, and take one question at a time. Every mock is one step closer to your goal.</span>
+                  </div>
                 </div>
+                <p class="support-note">Prepared with love and support from your husband.</p>
               </div>
-              <p class="support-note">Prepared with love and support from your husband.</p>
+              <div class="hero-photo-panel">
+                <div class="hero-photo-wrap">
+                  <img src="assets/naina_cream.jpg" alt="Naina Dalvi" class="hero-photo">
+                </div>
+                <div class="hero-photo-label">Dedicated Candidate Profile</div>
+              </div>
             </div>
           </div>
 
@@ -71,12 +79,19 @@
           </div>
 
           <div class="candidate-box">
-            <label for="candidateName">Candidate Name</label>
-            <input id="candidateName" type="text" value="Naina Dalvi" readonly />
-            <label class="consent-row">
-              <input type="checkbox" id="consentCheck" />
-              <span>I have read the instructions and am ready to begin the test.</span>
-            </label>
+            <div class="candidate-box-grid">
+              <div class="candidate-main">
+                <label for="candidateName">Candidate Name</label>
+                <input id="candidateName" type="text" value="Naina Dalvi" readonly />
+                <label class="consent-row">
+                  <input type="checkbox" id="consentCheck" />
+                  <span>I have read the instructions and am ready to begin the test.</span>
+                </label>
+              </div>
+              <div class="candidate-side-photo">
+                <img src="assets/naina_blue.jpg" alt="Naina Dalvi" class="candidate-side-img">
+              </div>
+            </div>
           </div>
 
           <div class="start-actions">
@@ -147,8 +162,8 @@
         </section>
 
         <aside class="side-panel">
-          <div class="profile-box">
-            <div class="avatar">N</div>
+          <div class="profile-box profile-box-photo">
+            <img src="assets/naina_cream.jpg" alt="Naina Dalvi" class="profile-photo">
             <div>
               <strong id="sideCandidateName">Naina Dalvi</strong>
               <span>IBPS Practice Candidate</span>
@@ -181,8 +196,8 @@
     <!-- RESULT SCREEN -->
     <section id="resultScreen" class="screen">
       <div class="result-shell">
-        <div class="result-hero">
-          <div class="result-icon">✓</div>
+        <div class="result-hero result-hero-photo">
+          <img src="assets/naina_blue.jpg" alt="Naina Dalvi" class="result-photo">
           <div>
             <span class="badge">NAINA'S TEST COMPLETED</span>
             <h1>Performance Summary</h1>
@@ -244,6 +259,13 @@
         </div>
       </div>
     </div>
+
+    <!-- AUDIO -->
+    <audio id="welcomeVoice" src="assets/welcome_voice.mp3" preload="auto"></audio>
+    <audio id="startChime" src="assets/start_chime.mp3" preload="auto"></audio>
+    <audio id="submitChime" src="assets/submit_chime.mp3" preload="auto"></audio>
+    <audio id="resultChime" src="assets/result_chime.mp3" preload="auto"></audio>
+    <audio id="resultVoice" src="assets/result_voice.mp3" preload="auto"></audio>
 
   </div>
 

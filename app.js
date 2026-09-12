@@ -56,7 +56,26 @@ const closeHistoryBtn2 = $("closeHistoryBtn2");
 const historyContent = $("historyContent");
 const clearHistoryBtn = $("clearHistoryBtn");
 
+const welcomeVoice = $("welcomeVoice");
+const startChime = $("startChime");
+const submitChime = $("submitChime");
+const resultChime = $("resultChime");
+const resultVoice = $("resultVoice");
+
 const sections = [...new Set(QUESTIONS.map(q => q.section))];
+
+function safePlay(audio, delay=0){
+  if(!audio) return;
+  const run = () => {
+    try{
+      audio.currentTime = 0;
+      const p = audio.play();
+      if (p && typeof p.catch === "function") p.catch(()=>{});
+    }catch(e){}
+  };
+  if(delay > 0) setTimeout(run, delay);
+  else run();
+}
 
 function showScreen(screen){
   [startScreen, testScreen, resultScreen].forEach(s => s.classList.remove("active"));
@@ -199,7 +218,8 @@ saveNextBtn.onclick = () => {
 markReviewBtn.onclick = () => {
   status[currentIndex] = "review";
   renderProgress();
-  goNext();
+  if(currentIndex < QUESTIONS.length-1) goNext();
+  else renderQuestion();
 };
 
 clearBtn.onclick = () => {
@@ -236,12 +256,17 @@ startBtn.onclick = () => {
   candidateName = "Naina Dalvi";
   candidateLabel.textContent = `Candidate: ${candidateName}`;
   sideCandidateName.textContent = candidateName;
+
+  safePlay(startChime);
+  safePlay(welcomeVoice, 250);
+
   showScreen(testScreen);
   renderQuestion();
   startTimer();
 };
 
 submitBtn.onclick = () => {
+  safePlay(submitChime);
   if(confirm("Are you sure you want to submit the test now?")){
     submitTest(false);
   }
@@ -317,7 +342,6 @@ function buildAttempt(auto, r, attempted, accuracy, used){
 function submitTest(auto){
   if(timerId) clearInterval(timerId);
 
-  // Save currently selected answer as answered if one is selected.
   if(responses[currentIndex] !== null && status[currentIndex] === "unanswered"){
     status[currentIndex] = "answered";
   }
@@ -393,6 +417,9 @@ function submitTest(auto){
   answerReview.style.display = "none";
   copyStatus.textContent = "";
   showScreen(resultScreen);
+
+  safePlay(resultChime);
+  safePlay(resultVoice, 450);
 }
 
 function buildAnswerReviewHtml(attempt = latestAttempt){
